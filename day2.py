@@ -156,8 +156,6 @@ def main():
         if possible:
             n += game
 
-    print(games)
-
     t = 0
     for game in games:
         max_red = 0
@@ -176,19 +174,6 @@ def main():
         m = max_red * max_green * max_blue
         t += m
     print(t)
-
-def main2():
-
-
-    l = [
-        'a',
-        'b',
-        'c',
-        'd',
-    ]
-
-    for i, a in enumerate(l):
-        print(a) if i % 2 == 0 else None
 
 
 if __name__ == '__main__':

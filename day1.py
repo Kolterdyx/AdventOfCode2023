@@ -1043,7 +1043,6 @@ def main():
                 continue
         if num != '':
             num = num[0] + num[-1]
-            print(num)
             n += int(num)
 
     print(n)
