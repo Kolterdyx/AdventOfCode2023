@@ -215,7 +215,6 @@ Card 212: 46 82 24 14 63 38 94 70 79 91 | 23 83 87  4 48 81 40 13 84 68 22 65 45
 Card 213: 79 84 12 86 58 10 11 24 32 26 | 52 94 65 29 89  7 76 80 31 21 78 37 66 69 13 41 93 73 96 16 92 44 62  3 95
 """.strip()
 
-
 test_data = """
 Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53
 Card 2: 13 32 20 16 61 | 61 30 68 82 17 32 24 19
@@ -237,8 +236,8 @@ def main():
     global data, test_data
     cards = {}
     n = 0
-    data = sanitize(data)
-    for line in data.split('\n'):
+    d = sanitize(data)
+    for line in d.split('\n'):
         card_name, nums = [l.strip() for l in line.split(':')]
         _, card_id = [l.strip() for l in card_name.split(' ')]
         card_id = int(card_id)
@@ -247,8 +246,17 @@ def main():
         cards[card_id]['ws'] = winning_set
         cards[card_id]['ns'] = number_set
         inter = winning_set.intersection(number_set)
-        if len(inter):
-            n += 1 * pow(2, len(inter) - 1)
+        cards[card_id]['p'] = len(inter)
+        cards[card_id]['c'] = 1
+
+    for cid, card in cards.items():
+        if card['p']:
+            for x in range(card['c']):
+                for i in range(cid + 1, cid + card['p'] + 1):
+                    cards[i]['c'] += 1
+    for card in cards.values():
+        n += card['c']
+
     print(n)
 
 
