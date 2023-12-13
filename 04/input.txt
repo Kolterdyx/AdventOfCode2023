@@ -1,5 +1,3 @@
-
-data = """
 Card   1: 69 61 27 58 89 52 81 94 40 51 | 43 40 52 90 37 97 89 80 69 42 51 70 94 58 10 73 21 29 61 63 57 79 81 27 35
 Card   2:  5 75 37 76 98 32 24 83 44 50 | 80 75 91  5 33 52 31 96 83 92 46 98 55 65 48 24 44  4 32 60 88 37 76 50 77
 Card   3: 37 39 43 53 47 20 50 56 78 65 | 80 56 32 78 72 97 40 77 17 50 87 99 36 93 63 19 39 59 44 52 23 75  9 51 43
@@ -213,52 +211,3 @@ Card 210: 34 74 60 33 14 25 27 98 54 75 | 90 79 69 27 70  4 40 93 66 62 65  3  8
 Card 211: 20 21 98 93 33 65 13 48 81 53 | 19 82 78 95 77 54 89 61 58 74 39 43  1 64 73 11 72  7 32  9 17 46  8 84 86
 Card 212: 46 82 24 14 63 38 94 70 79 91 | 23 83 87  4 48 81 40 13 84 68 22 65 45 11 88 75 98  1 15 56 64 44 35  7  3
 Card 213: 79 84 12 86 58 10 11 24 32 26 | 52 94 65 29 89  7 76 80 31 21 78 37 66 69 13 41 93 73 96 16 92 44 62  3 95
-""".strip()
-
-test_data = """
-Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53
-Card 2: 13 32 20 16 61 | 61 30 68 82 17 32 24 19
-Card 3:  1 21 53 59 44 | 69 82 63 72 16 21 14  1
-Card 4: 41 92 73 84 69 | 59 84 76 51 58  5 54 83
-Card 5: 87 83 26 28 32 | 88 30 70 12 93 22 82 36
-Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11
-""".strip()
-
-
-def sanitize(string):
-    res = string
-    while "  " in res:
-        res = res.replace("  ", " ")
-    return res
-
-
-def main():
-    global data, test_data
-    cards = {}
-    n = 0
-    d = sanitize(data)
-    for line in d.split('\n'):
-        card_name, nums = [l.strip() for l in line.split(':')]
-        _, card_id = [l.strip() for l in card_name.split(' ')]
-        card_id = int(card_id)
-        cards[card_id] = {}
-        winning_set, number_set = (set(l.strip().split(' ')) for l in nums.split('|'))
-        cards[card_id]['ws'] = winning_set
-        cards[card_id]['ns'] = number_set
-        inter = winning_set.intersection(number_set)
-        cards[card_id]['p'] = len(inter)
-        cards[card_id]['c'] = 1
-
-    for cid, card in cards.items():
-        if card['p']:
-            for x in range(card['c']):
-                for i in range(cid + 1, cid + card['p'] + 1):
-                    cards[i]['c'] += 1
-    for card in cards.values():
-        n += card['c']
-
-    print(n)
-
-
-if __name__ == '__main__':
-    main()
